@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Positions</title>
+</head>
+<body>
+<div class="positionList" th:unless="${#lists.isEmpty(aircrafts)}">
+<table>
+    <!--/*@thymesVar id="aircraft" type="com.github.kis8ya.sburplanefinderdemo.Aircraft"*/-->
+    <tr>
+        <th>ID</th>
+        <th>reg</th>
+        <th>route</th>
+        <th>type</th>
+    </tr>
+    <tr th:each="aircraft : ${aircrafts}">
+        <td th:text="${aircraft.getId()}">ID</td>
+        <td th:text="${aircraft.getReg()}">reg</td>
+        <td th:text="${aircraft.getRoute()}">route</td>
+        <td th:text="${aircraft.getType()}">type</td>
+    </tr>
+</table>
+</div>
+
+</body>
+</html>
