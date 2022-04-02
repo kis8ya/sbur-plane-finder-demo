@@ -20,21 +20,27 @@ public class PositionRetriever {
     @Bean
     Consumer<List<Aircraft>> retrieveAircraftPositions() {
         return acList -> {
-            repository.deleteAll();
-            repository.saveAll(acList);
-            sendPositions();
+            repository.deleteAll()
+                            .thenMany(repository.saveAll(acList))
+                                    .subscribe(args -> {
+                                        System.out.println("Saved and gonna send data to ws...");
+                                        sendPositions();
+                                    });
         };
     }
 
     private void sendPositions() {
-        if (repository.count() > 0) {
-            for (WebSocketSession session : handler.getSessions()) {
+        for (WebSocketSession session : handler.getSessions()) {
+            repository.findAll()
+                    .collectList()
+                    .subscribe(result -> {
                 try {
-                    session.sendMessage(new TextMessage(repository.findAll().toString()));
+                    System.out.println("Sending: " + result.size() + " positions...");
+                    session.sendMessage(new TextMessage(result.toString()));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
+            });
         }
     }
 }

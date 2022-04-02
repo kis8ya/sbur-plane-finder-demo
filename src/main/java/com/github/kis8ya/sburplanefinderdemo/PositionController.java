@@ -10,12 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class PositionController {
 
-    @NonNull
-    private final AircraftRepository repository;
+    private final PlaneFinderService planeFinderService;
 
-    @GetMapping({"/aircraft"})
-    public String get(Model model) {
-        model.addAttribute("aircrafts", repository.findAll());
-        return "positions";
-    }
+//    @GetMapping({"/aircraft"})
+//    public String get(Model model) {
+//        model.addAttribute("aircrafts",  planeFinderService.getAircraft());
+//        return "positions";
+//    }
 }
